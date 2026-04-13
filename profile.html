@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>My Profile - Madhu Foods</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:linear-gradient(#fff3b0,#ffe680);
+font-family:Arial;
+padding-top:100px;
+}
+
+/* NAVBAR */
+.custom-navbar{
+background:white;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+width:92%;
+margin:auto;
+margin-top:10px;
+padding:10px 30px;
+transition:0.3s;
+}
+
+.logo{
+height:45px;
+}
+
+.nav-link{
+position:relative;
+font-weight:500;
+margin-left:20px;
+}
+
+.nav-link:hover{
+color:#d0b200;
+transform:translateY(-2px);
+}
+
+.nav-link::after{
+content:"";
+position:absolute;
+width:0;
+height:2px;
+background:#d0b200;
+left:0;
+bottom:-5px;
+transition:0.3s;
+}
+
+.nav-link:hover::after{
+width:100%;
+}
+
+.cart-badge{
+background:red;
+color:white;
+font-size:12px;
+padding:3px 8px;
+border-radius:50%;
+margin-left:5px;
+}
+
+/* PROFILE */
+.profile-card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+margin-bottom:20px;
+}
+
+.profile-header{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.avatar{
+width:70px;
+height:70px;
+border-radius:50%;
+background:#d0b200;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+color:white;
+}
+
+.order-card{
+background:#fafafa;
+padding:15px;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+.btn-save{
+background:#d0b200;
+color:white;
+border:none;
+}
+
+.logout-btn{
+width:100%;
+margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
+
+<div class="container">
+
+<a class="navbar-brand" href="index.html">
+<img src="images/logo.png" class="logo">
+</a>
+
+<ul class="navbar-nav ml-auto">
+
+<li class="nav-item">
+<a class="nav-link" href="login.html" id="login-btn">Login</a>
+</li>
+
+<li class="nav-item" id="user-section" style="display:none;">
+<a class="nav-link" href="profile.html">👤 Profile</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#wcu">Why Choose Us?</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#menu">Explore Menu</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="cart.html">
+🛒 Cart <span class="cart-badge" id="cart-count">0</span>
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="checkout.html">Delivery</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="payment.html">Payment</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#follow">Follow Us</a>
+</li>
+
+</ul>
+
+</div>
+
+</nav>
+
+<!-- PROFILE -->
+<div class="container">
+
+<div class="profile-card">
+<div class="profile-header">
+<div class="avatar" id="avatar">M</div>
+<div>
+<h4 id="username"></h4>
+<p>Welcome back 👋</p>
+</div>
+</div>
+</div>
+
+<div class="profile-card">
+<h4>📦 Delivery Details</h4>
+
+<input type="text" id="name" class="form-control mb-2" placeholder="Name">
+<input type="text" id="phone" class="form-control mb-2" placeholder="Phone">
+<textarea id="address" class="form-control mb-2" placeholder="Address"></textarea>
+
+<button class="btn btn-save" onclick="saveDetails()">Save</button>
+</div>
+
+<div class="profile-card">
+<h4>🧾 My Orders</h4>
+<div id="orders"></div>
+</div>
+
+<button class="btn btn-danger logout-btn" onclick="logout()">Logout</button>
+
+</div>
+
+<script>
+
+/* USER */
+let user = localStorage.getItem("currentUser");
+
+if(!user){
+alert("Login first");
+window.location.href="login.html";
+}
+
+document.getElementById("username").innerText = user;
+document.getElementById("avatar").innerText = user.charAt(0).toUpperCase();
+
+/* LOGIN UI */
+document.getElementById("login-btn").style.display="none";
+document.getElementById("user-section").style.display="block";
+
+/* LOAD DETAILS */
+let saved = JSON.parse(localStorage.getItem(user+"_details"));
+
+if(saved){
+document.getElementById("name").value = saved.name || "";
+document.getElementById("phone").value = saved.phone || "";
+document.getElementById("address").value = saved.address || "";
+}
+
+/* SAVE DETAILS (FIXED) */
+function saveDetails(){
+
+let nameInput = document.getElementById("name").value;
+let phoneInput = document.getElementById("phone").value;
+let addressInput = document.getElementById("address").value;
+
+let data = {
+name: nameInput,
+phone: phoneInput,
+address: addressInput
+};
+
+localStorage.setItem(user+"_details", JSON.stringify(data));
+
+alert("Saved successfully!");
+
+}
+
+/* ORDERS */
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+let myOrders = orders.filter(o => o.user === user);
+
+let container = document.getElementById("orders");
+
+if(myOrders.length === 0){
+container.innerHTML = "<p>No orders yet</p>";
+}else{
+myOrders.forEach(order=>{
+let items = order.items.map(i=>i.name).join(", ");
+container.innerHTML += `
+<div class="order-card">
+<b>Items:</b> ${items}<br>
+<b>Date:</b> ${order.date}
+</div>`;
+});
+}
+
+/* LOGOUT */
+function logout(){
+localStorage.removeItem("loggedIn");
+localStorage.removeItem("currentUser");
+window.location.href="login.html";
+}
+
+/* CART COUNT */
+function updateCartCount(){
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+document.getElementById("cart-count").innerText = cart.length;
+}
+updateCartCount();
+
+/* NAVBAR SCROLL */
+window.addEventListener("scroll",function(){
+
+let navbar=document.querySelector(".custom-navbar");
+
+if(window.scrollY>50){
+navbar.style.padding="5px 20px";
+}else{
+navbar.style.padding="10px 30px";
+}
+
+});
+
+</script>
+
+</body>
+</html>

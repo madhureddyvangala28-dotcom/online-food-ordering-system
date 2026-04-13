@@ -1,0 +1,394 @@
+/* ================= GLOBAL ================= */
+*{
+  box-sizing:border-box;
+}
+
+body{
+font-family:Arial;
+background:linear-gradient(#fff3b0,#ffe680);
+padding-top:100px;
+}
+
+h1,h2,h3,h4{
+  margin-bottom:15px;
+}
+
+p{
+  color:#555;
+}
+
+/* ================= NAVBAR ================= */
+/* Floating Navbar */
+
+.custom-navbar{
+
+background:white;
+
+border-radius:15px;
+
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+
+width:92%;
+
+margin:auto;
+
+margin-top:10px;
+
+padding:10px 30px;
+
+}
+
+/* Logo */
+
+.logo{
+height:45px;
+}
+
+/* Nav links */
+
+.nav-link{
+
+font-weight:500;
+
+margin-left:20px;
+
+transition:0.3s;
+
+}
+
+/* Hover animation */
+
+.nav-link:hover{
+
+color:#d0b200;
+
+transform:translateY(-2px);
+
+}
+
+/* ================= HERO SECTION ================= */
+.hero{
+height:90vh;
+background:
+linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
+url("images/hero-biryani.jpg");
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:white;
+}
+
+/* 🔥 HERO CONTENT FINAL PERFECT ALIGNMENT */
+.hero-content{
+  width:100%;
+  max-width:680px;
+  margin:0 auto;
+  padding:140px 20px 0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+
+.hero-content h1{
+  font-size:48px;
+  color:#fff;
+  line-height:1.2;
+  margin-bottom:15px;
+}
+
+.hero-content p{
+  font-size:20px;
+  color:#fff;
+  margin-bottom:25px;
+}
+
+.hero-content .btn-main,
+.hero-content .btn-outline{
+  margin:8px;
+}
+
+@keyframes fadeHero{
+  from{opacity:0; transform:scale(1.03);}
+  to{opacity:1; transform:scale(1);}
+}
+
+/* ================= BUTTONS ================= */
+.btn-main,.btn-outline{
+  padding:10px 22px;
+  border-radius:4px;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.btn-main{
+  background:#d0b200;
+  color:white;
+  border:none;
+}
+
+.btn-outline{
+  background:transparent;
+  color:#d0b200;
+  border:1px solid #d0b200;
+}
+
+.btn-main:hover{
+  transform:scale(1.05);
+  box-shadow:0 6px 18px rgba(0,0,0,0.3);
+}
+
+.btn-outline:hover{
+  background:#d0b200;
+  color:white;
+  transform:scale(1.05);
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+/* ================= SECTIONS ================= */
+.section{
+  padding:70px;
+  text-align:center;
+  animation:fadeUp 0.8s ease both;
+}
+
+.sub-text{
+  color:gray;
+  margin-bottom:30px;
+}
+
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(30px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* ================= WHY CHOOSE US ================= */
+.card-box{
+  padding:25px;
+  border-radius:12px;
+  transition:0.3s;
+}
+
+.card-box img{
+  height:70px;
+  margin-bottom:15px;
+}
+
+.card-box:hover{
+  transform:translateY(-8px);
+  box-shadow:0 10px 22px rgba(0,0,0,0.15);
+}
+
+/* ================= EXPLORE MENU ================= */
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+}
+
+.menu-card{
+  transition:0.3s;
+}
+
+.menu-card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 12px 25px rgba(0,0,0,0.25);
+}
+
+.menu-card img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  border-radius:14px;
+  transition:0.4s;
+}
+
+.menu-card:hover img{
+  transform:scale(1.08);
+}
+
+.menu-card h4{
+  margin-top:10px;
+}
+
+/* ================= HEALTHY SECTION ================= */
+.healthy{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:50px;
+  flex-wrap:wrap;
+}
+
+.healthy img{
+  width:260px;
+  animation:floatImg 3s ease-in-out infinite;
+}
+
+@keyframes floatImg{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+  100%{transform:translateY(0);}
+}
+
+/* ================= THANK YOU ================= */
+.thankyou{
+  background:linear-gradient(#fff3b0,#ffe680);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  padding:60px;
+  flex-wrap:wrap;
+}
+
+.thankyou img{
+  width:180px;
+  animation:giftPop 1.5s ease infinite alternate;
+}
+
+@keyframes giftPop{
+  from{transform:rotate(-2deg) scale(1);}
+  to{transform:rotate(2deg) scale(1.05);}
+}
+
+/* ================= FOOTER ================= */
+footer{
+  background:#0d2436;
+  color:white;
+  text-align:center;
+  padding:40px;
+}
+
+footer img{
+  height:50px;
+  margin-bottom:10px;
+  transition:0.3s;
+}
+
+footer img:hover{
+  transform:scale(1.1);
+}
+.section{
+background:white;
+padding:60px;
+margin:40px auto;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+max-width:1200px;
+}
+.nav-link{
+position:relative;
+font-weight:500;
+margin-left:20px;
+transition:0.3s;
+}
+
+.nav-link::after{
+
+content:"";
+
+position:absolute;
+
+width:0;
+
+height:2px;
+
+background:#d0b200;
+
+left:0;
+
+bottom:-5px;
+
+transition:0.3s;
+
+}
+
+.nav-link:hover::after{
+
+width:100%;
+
+}
+.cart-badge{
+
+background:red;
+
+color:white;
+
+font-size:12px;
+
+padding:3px 8px;
+
+border-radius:50%;
+
+margin-left:5px;
+
+}
+
+/* Footer */
+
+.footer{
+background:#0d2436;
+color:white;
+padding:50px 20px;
+}
+
+.footer-container{
+display:flex;
+justify-content:space-between;
+flex-wrap:wrap;
+max-width:1100px;
+margin:auto;
+}
+
+.footer-logo{
+height:60px;
+margin-bottom:10px;
+}
+
+.footer h4{
+margin-bottom:10px;
+}
+
+.footer-follow h5,
+.footer-contact h5{
+margin-bottom:15px;
+}
+
+/* Social Icons */
+
+.social-icons a{
+font-size:22px;
+margin-right:15px;
+color:white;
+transition:0.3s;
+}
+
+.social-icons a:hover{
+color:#d0b200;
+transform:scale(1.2);
+}
+
+/* Contact */
+
+.footer-contact p{
+margin:5px 0;
+}
+
+/* Bottom */
+
+.footer-bottom{
+text-align:center;
+margin-top:30px;
+font-size:14px;
+color:#ccc;
+}
+html{
+  scroll-behavior:smooth;
+}

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Admin Panel - Madhu Foods</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+
+/* FONT */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#fff3b0,#ffe680);
+padding-top:120px;
+}
+
+/* NAVBAR */
+.custom-navbar{
+position:fixed;
+top:10px;
+left:50%;
+transform:translateX(-50%);
+width:92%;
+background:rgba(255,255,255,0.9);
+backdrop-filter:blur(12px);
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+padding:15px 35px;
+transition:0.4s;
+z-index:1000;
+}
+
+.nav-small{
+padding:8px 25px !important;
+transform:translateX(-50%) scale(0.95);
+}
+
+.logo{
+height:45px;
+}
+
+.nav-link{
+position:relative;
+font-weight:500;
+margin-left:20px;
+}
+
+.nav-link:hover{
+color:#d0b200;
+transform:translateY(-2px);
+}
+
+.nav-link::after{
+content:"";
+position:absolute;
+width:0;
+height:2px;
+background:#d0b200;
+left:0;
+bottom:-5px;
+transition:0.3s;
+}
+
+.nav-link:hover::after{
+width:100%;
+}
+
+.cart-badge{
+background:red;
+color:white;
+font-size:12px;
+padding:3px 8px;
+border-radius:50%;
+margin-left:5px;
+}
+
+/* HEADER */
+.dashboard-title{
+font-weight:600;
+margin-bottom:20px;
+}
+
+/* STATS CARDS */
+.stat-card{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,0.1);
+text-align:center;
+transition:0.3s;
+}
+
+.stat-card:hover{
+transform:translateY(-5px);
+}
+
+.stat-number{
+font-size:28px;
+font-weight:600;
+color:#ff5722;
+}
+
+/* BOX */
+.box{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+margin-bottom:30px;
+animation:fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1;}
+}
+
+/* TABLE */
+.table{
+border-radius:10px;
+overflow:hidden;
+}
+
+.table thead{
+background:#ff9800;
+color:white;
+}
+
+.table-hover tbody tr:hover{
+background:#fff3cd;
+}
+
+/* BUTTON */
+.logout-btn{
+float:right;
+border-radius:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar">
+
+<div class="container">
+
+<a class="navbar-brand" href="index.html">
+<img src="images/logo.png" class="logo">
+</a>
+
+
+<ul class="navbar-nav ml-auto">
+
+<li class="nav-item">
+<a class="nav-link" href="profile.html">👤 Profile</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#wcu">Why Choose Us?</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#menu">Explore Menu</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="cart.html">
+🛒 Cart <span class="cart-badge" id="cart-count">0</span>
+</a>
+</li>
+
+
+<li class="nav-item">
+<a class="nav-link" href="checkout.html">Delivery</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="payment.html">Payment</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#follow">Follow Us</a>
+</li>
+
+</ul>
+
+</div>
+
+</nav>
+
+<div class="container">
+
+<h2 class="dashboard-title">
+👨‍💼 Admin Dashboard
+<button class="btn btn-danger logout-btn" onclick="logout()">Logout</button>
+</h2>
+
+<!-- STATS -->
+<div class="row mb-4">
+
+<div class="col-md-4">
+<div class="stat-card">
+<h5>Total Users</h5>
+<div class="stat-number" id="totalUsers">0</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="stat-card">
+<h5>Total Orders</h5>
+<div class="stat-number" id="totalOrders">0</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="stat-card">
+<h5>Revenue</h5>
+<div class="stat-number" id="totalRevenue">₹0</div>
+</div>
+</div>
+
+</div>
+
+<!-- USERS -->
+<div class="box">
+<h4>👥 Users</h4>
+<table class="table table-bordered table-hover">
+<thead>
+<tr>
+<th>#</th>
+<th>Username</th>
+<th>Password</th>
+</tr>
+</thead>
+<tbody id="userTable"></tbody>
+</table>
+</div>
+
+<!-- ORDERS -->
+<div class="box">
+<h4>📦 Orders</h4>
+<table class="table table-bordered table-hover">
+<thead>
+<tr>
+<th>#</th>
+<th>User</th>
+<th>Items</th>
+<th>Total</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody id="orderTable"></tbody>
+</table>
+</div>
+
+</div>
+
+<script>
+
+/* SECURITY */
+let currentUser = localStorage.getItem("currentUser");
+
+if(currentUser !== "admin"){
+alert("Access denied");
+window.location.href="login.html";
+}
+
+/* USERS */
+let users = JSON.parse(localStorage.getItem("users")) || [];
+let userTable = document.getElementById("userTable");
+
+document.getElementById("totalUsers").innerText = users.length;
+
+users.forEach((u,i)=>{
+userTable.innerHTML += `
+<tr>
+<td>${i+1}</td>
+<td>${u.username}</td>
+<td>${u.password}</td>
+</tr>`;
+});
+
+/* ORDERS */
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+let orderTable = document.getElementById("orderTable");
+
+document.getElementById("totalOrders").innerText = orders.length;
+
+let totalRevenue = 0;
+
+if(orders.length === 0){
+orderTable.innerHTML = `<tr><td colspan="5">No Orders Found</td></tr>`;
+}else{
+
+orders.forEach((order,i)=>{
+
+let user = order.user || "Unknown";
+
+let itemsArr = order.items || [];
+
+let items = itemsArr.map(i => `${i.name} ₹${i.price}`).join(", ");
+
+let total = itemsArr.reduce((sum,i)=> sum + (i.price || 0),0);
+
+totalRevenue += total;
+
+let date = order.date || "-";
+
+orderTable.innerHTML += `
+<tr>
+<td>${i+1}</td>
+<td>${user}</td>
+<td>${items}</td>
+<td>₹${total}</td>
+<td>${date}</td>
+</tr>`;
+});
+
+}
+
+document.getElementById("totalRevenue").innerText = "₹" + totalRevenue;
+
+/* CART COUNT */
+function updateCartCount(){
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+document.getElementById("cart-count").innerText = cart.length;
+}
+updateCartCount();
+
+/* LOGOUT */
+function logout(){
+localStorage.removeItem("loggedIn");
+localStorage.removeItem("currentUser");
+window.location.href="login.html";
+}
+
+/* NAVBAR ANIMATION */
+window.addEventListener("scroll",function(){
+let nav=document.querySelector(".custom-navbar");
+if(window.scrollY>50){
+nav.classList.add("nav-small");
+}else{
+nav.classList.remove("nav-small");
+}
+});
+
+</script>
+
+</body>
+</html>

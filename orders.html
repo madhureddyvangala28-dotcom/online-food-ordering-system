@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>My Orders - Madhu Foods</title>
+
+<link rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+body{
+background:linear-gradient(#fff3b0,#ffe680);
+padding:40px;
+font-family:Arial;
+}
+
+.box{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+margin-bottom:20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>👤 User ID: <span id="user"></span></h2>
+
+<h3 class="mt-4">📦 Order History</h3>
+
+<div id="orders"></div>
+
+</div>
+
+<script>
+
+// show user
+let user = localStorage.getItem("currentUser");
+document.getElementById("user").innerText = user;
+
+// get orders
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+let container = document.getElementById("orders");
+
+let userOrders = orders.filter(o => o.user === user);
+
+if(userOrders.length === 0){
+
+container.innerHTML = "<h4>No orders found</h4>";
+
+}else{
+
+userOrders.forEach(order=>{
+
+container.innerHTML += `
+<div class="box">
+
+<p><strong>Date:</strong> ${order.date}</p>
+
+<ul>
+${order.items.map(i => `<li>${i.name} - ₹${i.price}</li>`).join("")}
+</ul>
+
+</div>
+`;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

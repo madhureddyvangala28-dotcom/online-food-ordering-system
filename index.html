@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Madhu Foods</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
+
+<div class="container">
+
+<a class="navbar-brand" href="index.html">
+<img src="images/logo.png" class="logo">
+</a>
+
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarNav">
+
+<ul class="navbar-nav ml-auto">
+<li class="nav-item">
+<a class="nav-link" href="login.html" id="login-btn">Login</a>
+</li>
+
+<li class="nav-item" id="user-section" style="display:none;">
+<a class="nav-link" href="profile.html">👤 Profile</a>
+</li>
+
+
+<li class="nav-item">
+<a class="nav-link" href="#wcu">Why Choose Us?</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="#menu">Explore Menu</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link cart-link" href="cart.html">
+🛒 Cart <span class="cart-badge" id="cart-count">0</span>
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="checkout.html">Delivery</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="payment.html">Payment</a>
+</li>
+
+
+<li class="nav-item">
+<a class="nav-link" href="#follow">Follow Us</a>
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+
+    <h1>Get Delicious Food Anytime</h1>
+
+    <p>Eat Smart & Healthy</p>
+
+    <div class="hero-buttons">
+      <a href="#menu" class="btn-main">View Menu</a>
+      <button class="btn-outline" onclick="goToCart()">Order Now</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Why Choose Us -->
+<section id="wcu" class="section">
+  <h2>Why Choose Us?</h2>
+  <p class="sub-text">We use both original recipes and classic versions.</p>
+
+  <div class="row">
+    <div class="col-md-4 card-box">
+      <img src="images/food-service.png">
+      <h4>Food Service</h4>
+      <p>Experience fine dining at the comfort of your home.
+        All our orders are carefully packed and arranged to 
+        give you the nothing less than perfect.
+      </p>
+    </div>
+    <div class="col-md-4 card-box">
+      <img src="images/fresh-food.png">
+      <h4>Fresh Food</h4>
+      <p>Experience fine dining at the comfort of your home. All our
+        orders are carefully packed and arranged to give you the nothing
+        less than perfect.
+      </p>
+    </div>
+    <div class="col-md-4 card-box">
+      <img src="images/best-offer.png">
+      <h4>Best Offers</h4>
+      <p>Food Coupons & Offers upto
+        50% OFF and Exclusive Promo Codes on All Online Food Orders.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Explore Menu -->
+<section id="menu" class="section">
+  <h2>Explore Menu</h2>
+
+  <div class="row">
+
+    <div class="col-md-3 menu-card">
+      <a href="menu.html?category=nonveg">
+        <img src="images/nonveg.jpg">
+        <p>Non-Veg Starters</p>
+      </a>
+    </div>
+
+    <div class="col-md-3 menu-card">
+      <a href="menu.html?category=veg">
+        <img src="images/veg.jpg">
+        <p>Veg Starters</p>
+      </a>
+    </div>
+
+    <div class="col-md-3 menu-card">
+      <a href="menu.html?category=soups">
+        <img src="images/soup.jpg">
+        <p>Soups</p>
+      </a>
+    </div>
+
+    <div class="col-md-3 menu-card">
+      <a href="menu.html?category=fish">
+        <img src="images/fish.jpg">
+        <p>Fish & Sea Food</p>
+      </a>
+    </div>
+
+    <div class="col-md-3 menu-card">
+      <a href="menu.html?category=maincourse">
+        <img src="images/maincourse.jpg">
+        <p>Main Course</p>
+      </a>
+    </div>
+
+    <div class="col-md-3 menu-card">
+      <a href="menu.html?category=noodles">
+        <img src="images/noodles.jpg">
+        <p>Noodles</p>
+      </a>
+    </div>
+
+    <div class="col-md-3 menu-card">
+      <a href="menu.html?category=salads">
+        <img src="images/salad.jpg">
+        <p>Salads</p>
+      </a>
+    </div>
+
+    <div class="col-md-3 menu-card">
+      <a href="menu.html?category=desserts">
+        <img src="images/dessert.jpg">
+        <p>Desserts</p>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Healthy -->
+<section class="section healthy">
+  <img src="images/healthy-fruits.jpg">
+  <div>
+    <h2>Fresh, Healthy, Organic, Delicious Fruits</h2>
+    <p>Say no to harmful chemicals and go fully organic.</p>
+    <button class="btn-main">Watch Video</button>
+  </div>
+</section>
+
+<!-- Thank You -->
+<section class="thankyou">
+  <div>
+    <h2>Thank you for being a valuable customer to us.</h2>
+    <p>We have a surprise gift for you</p>
+    <button class="btn-main">Redeem Gift</button>
+  </div>
+  <img src="images/gift.png">
+</section>
+
+
+
+<!-- Footer -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<!-- Logo + Name -->
+
+<div class="footer-brand">
+
+<img src="images/logo.png" class="footer-logo">
+
+<h4>MADHU FOOD'S</h4>
+
+<p>Delicious food delivered to your doorstep.</p>
+
+</div>
+
+
+<!-- Follow Section -->
+<footer id="follow" class="footer"></footer>
+
+<div class="footer-follow">
+
+<h5>Follow Us</h5>
+
+<div class="social-icons">
+
+<a href="#"><i class="fab fa-facebook"></i></a>
+
+<a href="#"><i class="fab fa-instagram"></i></a>
+
+<a href="#"><i class="fab fa-twitter"></i></a>
+
+<a href="#"><i class="fab fa-linkedin"></i></a>
+
+<a href="#"><i class="fab fa-youtube"></i></a>
+
+</div>
+
+</div>
+
+
+<!-- Contact -->
+
+<div class="footer-contact">
+
+<h5>Contact</h5>
+
+<p><i class="fas fa-envelope"></i> madhufoods@gmail.com</p>
+
+<p><i class="fas fa-phone"></i> +91 8309134148</p>
+
+<p><i class="fas fa-location-dot"></i> Gujarat, India</p>
+
+</div>
+
+</div>
+
+<p class="footer-bottom">
+© 2026 Madhu Foods. All Rights Reserved.
+</p>
+
+</footer>
+<script>
+if(!localStorage.getItem("users")){
+localStorage.setItem("users", JSON.stringify([]));
+}
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function addToCart(name,price,image){
+
+let item={
+name:name,
+price:price,
+image:image
+};
+
+cart.push(item);
+
+localStorage.setItem("cart",JSON.stringify(cart));
+
+updateCartCount();
+
+alert(name+" added to cart");
+
+}
+
+function updateCartCount(){
+
+document.getElementById("cart-count").innerText = cart.length;
+
+}
+
+updateCartCount();
+window.addEventListener("scroll",function(){
+
+let navbar=document.querySelector(".custom-navbar");
+
+if(window.scrollY>50){
+
+navbar.style.padding="5px 20px";
+
+navbar.style.boxShadow="0 5px 15px rgba(0,0,0,0.2)";
+
+}
+
+else{
+
+navbar.style.padding="10px 30px";
+
+navbar.style.boxShadow="0 8px 20px rgba(0,0,0,0.15)";
+
+}
+
+});
+function goToCart(){
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+if(cart.length === 0){
+
+alert("🛒 Your cart is empty. Please add food items first.");
+
+}else{
+
+window.location.href="cart.html";
+
+}
+
+}
+
+// ✅ Ensure users dataset exists
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+// ✅ Add admin if not exists
+if(!users.find(u => u.username === "admin")){
+users.push({username:"admin", password:"admin123"});
+localStorage.setItem("users", JSON.stringify(users));
+}
+// check login
+let user = localStorage.getItem("currentUser");
+
+if(user){
+
+document.getElementById("login-btn").style.display = "none";
+document.getElementById("user-section").style.display = "block";
+document.getElementById("logout-section").style.display = "block";
+
+document.getElementById("username-display").innerText = user;
+
+// admin shortcut
+if(user === "admin"){
+let adminLink = document.createElement("a");
+adminLink.innerText = "Admin Panel";
+adminLink.className = "nav-link";
+adminLink.href = "admin.html";
+document.querySelector(".navbar-nav").appendChild(adminLink);
+}
+
+}
+function logout(){
+
+localStorage.removeItem("loggedIn");
+localStorage.removeItem("currentUser");
+
+alert("Logged out");
+
+window.location.href="index.html";
+
+}
+
+</script>
+</body>
+</html>

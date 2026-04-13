@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<title>Checkout - Madhu Foods</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+
+body{
+background:linear-gradient(#fff3b0,#ffe680);
+font-family:Arial;
+padding-top:120px;
+min-height:1500px;
+}
+
+/* NAVBAR */
+.custom-navbar{
+position:fixed;
+top:10px;
+left:50%;
+transform:translateX(-50%);
+width:92%;
+background:rgba(255,255,255,0.95);
+backdrop-filter:blur(10px);
+
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+
+padding:18px 40px;
+transition:all 0.4s ease;
+
+z-index:1000;
+}
+
+.nav-small{
+padding:8px 25px !important;
+width:88% !important;
+top:5px !important;
+box-shadow:0 5px 15px rgba(0,0,0,0.25);
+transform:translateX(-50%) scale(0.97);
+}
+
+.logo{
+height:45px;
+}
+
+.nav-link{
+position:relative;
+font-weight:500;
+margin-left:20px;
+}
+
+.nav-link:hover{
+color:#d0b200;
+transform:translateY(-2px);
+}
+
+.nav-link::after{
+content:"";
+position:absolute;
+width:0;
+height:2px;
+background:#d0b200;
+left:0;
+bottom:-5px;
+transition:0.3s;
+}
+
+.nav-link:hover::after{
+width:100%;
+}
+
+.cart-badge{
+background:red;
+color:white;
+font-size:12px;
+padding:3px 8px;
+border-radius:50%;
+margin-left:5px;
+}
+
+/* CHECKOUT */
+.checkout-box{
+background:white;
+padding:35px;
+margin:40px auto;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+max-width:900px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar">
+
+<div class="container">
+
+<a class="navbar-brand" href="index.html">
+<img src="images/logo.png" class="logo">
+</a>
+
+<ul class="navbar-nav ml-auto">
+
+<li class="nav-item">
+<a class="nav-link" href="login.html" id="login-btn">Login</a>
+</li>
+
+<li class="nav-item" id="user-section" style="display:none;">
+<a class="nav-link" href="profile.html">👤 Profile</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#wcu">Why Choose Us?</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#menu">Explore Menu</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="cart.html">
+🛒 Cart <span class="cart-badge" id="cart-count">0</span>
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="checkout.html">Delivery</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="payment.html">Payment</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#follow">Follow Us</a>
+</li>
+
+</ul>
+
+</div>
+
+</nav>
+
+<!-- CHECKOUT -->
+<div class="container">
+
+<div class="checkout-box">
+
+<h2>Delivery Details</h2>
+
+<form onsubmit="placeOrder(event)">
+
+<input type="text" id="name" class="form-control mb-2" placeholder="Name" required>
+<input type="text" id="phone" class="form-control mb-2" placeholder="Phone" required>
+<textarea id="address" class="form-control mb-2" placeholder="Address" required></textarea>
+
+<select id="payment" class="form-control mb-3">
+<option value="COD">Cash on Delivery</option>
+<option value="UPI">UPI</option>
+</select>
+
+<button class="btn btn-warning btn-block">Confirm Order</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+/* USER LOGIN CHECK */
+let user = localStorage.getItem("currentUser");
+
+if(!user){
+alert("Login first");
+window.location.href="login.html";
+}else{
+document.getElementById("login-btn").style.display="none";
+document.getElementById("user-section").style.display="block";
+}
+
+/* AUTO FILL */
+let saved = JSON.parse(localStorage.getItem(user+"_details"));
+
+if(saved){
+document.getElementById("name").value = saved.name;
+document.getElementById("phone").value = saved.phone;
+document.getElementById("address").value = saved.address;
+}
+
+/* PLACE ORDER */
+function placeOrder(e){
+
+e.preventDefault();
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+if(cart.length === 0){
+alert("Cart empty");
+return;
+}
+
+/* SAVE ORDER */
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+let newOrder = {
+user: user,
+items: cart,
+date: new Date().toLocaleString()
+};
+
+orders.push(newOrder);
+localStorage.setItem("orders", JSON.stringify(orders));
+
+/* SAVE USER DETAILS */
+localStorage.setItem(user+"_details", JSON.stringify({
+name: document.getElementById("name").value,
+phone: document.getElementById("phone").value,
+address: document.getElementById("address").value
+}));
+
+/* GENERATE PDF */
+generateInvoice(cart);
+
+/* CLEAR CART */
+localStorage.removeItem("cart");
+
+/* REDIRECT */
+let payment = document.getElementById("payment").value;
+
+if(payment === "UPI"){
+window.location.href="payment.html";
+}else{
+window.location.href="success.html";
+}
+
+}
+
+/* PDF */
+function generateInvoice(cart){
+
+const { jsPDF } = window.jspdf;
+let doc = new jsPDF();
+
+let y = 20;
+doc.text("Madhu Foods Invoice",20,y);
+y += 10;
+
+let total = 0;
+
+cart.forEach(item=>{
+let price = item.price;
+total += price;
+
+doc.text(`${item.name} - ₹${price}`,20,y);
+y += 10;
+});
+
+doc.text("Total: ₹" + total,20,y+10);
+doc.save("invoice.pdf");
+
+}
+
+/* CART COUNT */
+function updateCartCount(){
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+document.getElementById("cart-count").innerText = cart.length;
+}
+updateCartCount();
+
+/* NAVBAR ANIMATION */
+window.addEventListener("scroll", function(){
+
+let nav = document.querySelector(".custom-navbar");
+
+if(window.scrollY > 50){
+nav.classList.add("nav-small");
+}else{
+nav.classList.remove("nav-small");
+}
+
+});
+
+</script>
+
+</body>
+</html>

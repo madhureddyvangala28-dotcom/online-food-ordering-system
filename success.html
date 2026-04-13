@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Order Successful - Madhu Foods</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+
+/* LOADER */
+#loader{
+position:fixed;
+width:100%;
+height:100%;
+background:white;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.spinner{
+width:50px;
+height:50px;
+border:5px solid #eee;
+border-top:5px solid #d0b200;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+100%{transform:rotate(360deg);}
+}
+
+body{
+background:linear-gradient(#fff3b0,#ffe680);
+font-family:Arial;
+padding-top:100px;
+text-align:center;
+}
+
+/* NAVBAR */
+.custom-navbar{
+background:white;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+width:92%;
+margin:auto;
+margin-top:10px;
+padding:10px 30px;
+transition:0.3s;
+}
+
+.logo{
+height:45px;
+}
+
+.nav-link{
+position:relative;
+font-weight:500;
+margin-left:20px;
+}
+
+.nav-link:hover{
+color:#d0b200;
+transform:translateY(-2px);
+}
+
+.nav-link::after{
+content:"";
+position:absolute;
+width:0;
+height:2px;
+background:#d0b200;
+left:0;
+bottom:-5px;
+transition:0.3s;
+}
+
+.nav-link:hover::after{
+width:100%;
+}
+
+.cart-badge{
+background:red;
+color:white;
+font-size:12px;
+padding:3px 8px;
+border-radius:50%;
+margin-left:5px;
+}
+
+/* SUCCESS BOX */
+.success-box{
+background:white;
+padding:40px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+max-width:600px;
+margin:50px auto;
+animation:fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* CHECK */
+.checkmark{
+font-size:80px;
+color:green;
+animation:pop 0.6s ease;
+}
+
+@keyframes pop{
+0%{transform:scale(0);}
+100%{transform:scale(1);}
+}
+
+
+/* RATING */
+.rating span{
+font-size:35px;
+cursor:pointer;
+color:#ccc;
+transition:0.2s;
+}
+
+.rating span:hover{
+color:orange;
+}
+
+.rating span.active{
+color:orange;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+<div class="spinner"></div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
+
+<div class="container">
+
+<a class="navbar-brand" href="index.html">
+<img src="images/logo.png" class="logo">
+</a>
+
+<ul class="navbar-nav ml-auto">
+
+<li class="nav-item">
+<a class="nav-link" href="login.html" id="login-btn">Login</a>
+</li>
+
+<li class="nav-item" id="user-section" style="display:none;">
+<a class="nav-link" href="profile.html">👤 Profile</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#wcu">Why Choose Us?</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#menu">Explore Menu</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="cart.html">
+🛒 Cart <span class="cart-badge" id="cart-count">0</span>
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="checkout.html">Delivery</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="payment.html">Payment</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#follow">Follow Us</a>
+</li>
+
+</ul>
+
+</div>
+
+</nav>
+
+<!-- SUCCESS -->
+<div class="success-box">
+
+<div class="checkmark">✔</div>
+
+<h2>Order Placed Successfully!</h2>
+
+<p>Your delicious food is on the way 🍔</p>
+
+<hr>
+
+<p><strong>Order ID:</strong> <span id="order-id"></span></p>
+
+<p><strong>Estimated Delivery:</strong> 30 Minutes</p>
+
+<hr>
+
+<h4>Rate Your Experience</h4>
+
+<div class="rating" id="rating">
+<span>★</span>
+<span>★</span>
+<span>★</span>
+<span>★</span>
+<span>★</span>
+</div>
+
+<br>
+
+<a href="index.html" class="btn btn-success">
+Back to Home
+</a>
+
+</div>
+
+<script>
+
+/* LOADER */
+window.addEventListener("load",()=>{
+document.getElementById("loader").style.display="none";
+});
+
+/* LOGIN */
+let user = localStorage.getItem("currentUser");
+
+if(user){
+document.getElementById("login-btn").style.display="none";
+document.getElementById("user-section").style.display="block";
+}
+
+/* CART COUNT */
+function updateCartCount(){
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let count = document.getElementById("cart-count");
+if(count){
+count.innerText = cart.length;
+}
+}
+updateCartCount();
+
+/* ORDER ID */
+document.getElementById("order-id").innerText = 
+"MF" + Math.floor(Math.random()*100000);
+
+/* STAR RATING */
+const stars = document.querySelectorAll("#rating span");
+
+stars.forEach((star,index)=>{
+star.addEventListener("click",function(){
+
+stars.forEach(s => s.classList.remove("active"));
+
+for(let i=0;i<=index;i++){
+stars[i].classList.add("active");
+}
+
+alert("Thanks for rating " + (index+1) + " ⭐");
+
+});
+});
+
+/* CONFETTI */
+for(let i=0;i<50;i++){
+
+let div=document.createElement("div");
+
+div.style.position="fixed";
+div.style.width="10px";
+div.style.height="10px";
+
+div.style.background=["red","yellow","green","blue"][Math.floor(Math.random()*4)];
+
+div.style.left=Math.random()*100+"vw";
+div.style.top="-10px";
+
+div.style.animation="fall 3s linear infinite";
+
+document.body.appendChild(div);
+
+}
+
+/* NAVBAR SCROLL */
+window.addEventListener("scroll",function(){
+
+let nav=document.querySelector(".custom-navbar");
+
+if(window.scrollY>50){
+nav.style.padding="5px 20px";
+}else{
+nav.style.padding="10px 30px";
+}
+
+});
+
+</script>
+
+</body>
+</html>

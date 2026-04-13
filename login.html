@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<title>Madhu Foods - Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+
+body{
+background:linear-gradient(#fff3b0,#ffe680);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:Arial;
+}
+
+.login-container{
+background:white;
+padding:40px;
+border-radius:10px;
+width:350px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+text-align:center;
+}
+
+.logo{
+width:70px;
+margin-bottom:15px;
+}
+
+.btn-login{
+background:#d0b200;
+color:white;
+border:none;
+width:100%;
+padding:10px;
+font-size:16px;
+}
+
+.btn-login:hover{
+background:#b89a00;
+}
+
+.password-box{
+position:relative;
+}
+
+.show-btn{
+position:absolute;
+right:10px;
+top:8px;
+border:none;
+background:none;
+cursor:pointer;
+font-size:14px;
+color:#007bff;
+}
+
+.forgot{
+display:block;
+margin-top:10px;
+font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGIN BOX -->
+<div class="login-container" id="loginBox">
+
+<img src="images/logo.png" class="logo">
+
+<h2>Madhu Foods Login</h2>
+
+<input type="text" id="username" class="form-control mb-3"
+placeholder="Enter Username">
+
+<div class="password-box">
+
+<input type="password" id="password" class="form-control"
+placeholder="Enter Password">
+
+<button type="button" class="show-btn"
+onclick="togglePassword()">Show</button>
+
+</div>
+
+<button class="btn btn-secondary mt-2" onclick="register()">
+Sign Up
+</button>
+
+<a href="#" class="forgot" onclick="showReset()">Forgot Password?</a>
+
+<button class="btn-login mt-3" onclick="login()">Login</button>
+
+<p id="error" style="color:red;margin-top:10px;"></p>
+
+</div>
+
+
+<!-- RESET PASSWORD BOX -->
+<div class="login-container" id="resetBox" style="display:none">
+
+<h3>Reset Password</h3>
+
+<input type="text" id="resetUser" class="form-control mb-2"
+placeholder="Enter Username">
+
+<button class="btn btn-warning mb-3" onclick="sendOTP()">Send OTP</button>
+
+<input type="text" id="otpInput" class="form-control mb-2"
+placeholder="Enter OTP">
+
+<input type="password" id="newPass" class="form-control mb-2"
+placeholder="New Password">
+
+<button class="btn btn-success" onclick="resetPassword()">
+Reset Password
+</button>
+
+</div>
+
+
+<script>
+// ✅ INIT USERS
+let user = JSON.parse(localStorage.getItem("users")) || [];
+
+// add admin if not exists
+if(!users.find(u => u.username === "admin")){
+users.push({username:"admin", password:"admin123"});
+}
+
+// add default user
+if(!users.find(u => u.username === "madhu")){
+users.push({username:"madhu", password:"1234"});
+}
+
+localStorage.setItem("users", JSON.stringify(users));
+
+// ================= USER DATASET =================
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+// ensure admin + default user always exist
+if(!users.find(u => u.username === "admin")){
+users.push({username:"admin", password:"admin123"});
+}
+
+if(!users.find(u => u.username === "madhu")){
+users.push({username:"madhu", password:"1234"});
+}
+
+localStorage.setItem("users", JSON.stringify(users));
+
+
+// ================= PASSWORD TOGGLE =================
+function togglePassword(){
+let pass=document.getElementById("password");
+pass.type = (pass.type === "password") ? "text" : "password";
+}
+
+
+// ================= SHOW RESET =================
+function showReset(){
+document.getElementById("loginBox").style.display="none";
+document.getElementById("resetBox").style.display="block";
+}
+
+
+// ================= OTP =================
+let generatedOTP = "";
+
+function sendOTP(){
+generatedOTP = Math.floor(1000 + Math.random() * 9000);
+alert("Your OTP is: " + generatedOTP);
+}
+
+
+// ================= RESET PASSWORD =================
+function resetPassword(){
+
+let otp = document.getElementById("otpInput").value;
+let newPass = document.getElementById("newPass").value;
+let user = document.getElementById("resetUser").value;
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+if(otp == generatedOTP){
+
+let found = users.find(u => u.username === user);
+
+if(found){
+found.password = newPass;
+localStorage.setItem("users", JSON.stringify(users));
+alert("Password updated!");
+location.reload();
+}else{
+alert("User not found");
+}
+
+}else{
+alert("Invalid OTP");
+}
+
+}
+
+
+// ================= LOGIN =================
+function login(){
+
+let user = document.getElementById("username").value;
+let pass = document.getElementById("password").value;
+
+if(!user || !pass){
+document.getElementById("error").innerText="Please enter username & password";
+return;
+}
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+let found = users.find(u => u.username === user && u.password === pass);
+
+if(found){
+
+localStorage.setItem("loggedIn","true");
+localStorage.setItem("currentUser", user);
+
+// 🔥 ADMIN REDIRECT
+if(user === "admin"){
+window.location.href="admin.html";
+}else{
+window.location.href="index.html";
+}
+
+}else{
+document.getElementById("error").innerText="Invalid Username or Password";
+}
+
+}
+
+
+// ================= REGISTER =================
+function register(){
+
+let user = prompt("Enter new username:");
+let pass = prompt("Enter new password:");
+
+if(!user || !pass){
+alert("Enter valid details");
+return;
+}
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+let exists = users.find(u => u.username === user);
+
+if(exists){
+alert("User already exists!");
+return;
+}
+
+users.push({username:user, password:pass});
+
+localStorage.setItem("users", JSON.stringify(users));
+
+alert("Registration successful! Now login.");
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Food Menu</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+
+body{
+font-family:Arial;
+background:linear-gradient(#fff3b0,#ffe680);
+padding-top:100px;
+}
+
+/* Navbar */
+
+/* Floating Navbar */
+
+.custom-navbar{
+
+background:white;
+
+border-radius:15px;
+
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+
+width:92%;
+
+margin:auto;
+
+margin-top:10px;
+
+padding:10px 30px;
+
+}
+
+/*Logo*/
+
+.logo{
+height:45px;
+}
+
+/* Nav links */
+
+.nav-link{
+
+font-weight:500;
+
+margin-left:20px;
+
+transition:0.3s;
+
+}
+
+/* Hover animation */
+
+.nav-link:hover{
+
+color:#d0b200;
+
+transform:translateY(-2px);
+
+}
+
+/* Menu Card Container */
+
+.menu-container{
+background:white;
+padding:40px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Menu Items */
+
+.menu-item{
+text-align:center;
+margin-bottom:30px;
+transition:0.3s;
+}
+
+.menu-item:hover{
+transform:translateY(-5px);
+}
+
+.menu-item img{
+width:100%;
+height:200px;
+object-fit:cover;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+.menu-item h5{
+font-weight:bold;
+}
+
+.menu-item button{
+margin-top:10px;
+}
+.nav-link{
+position:relative;
+font-weight:500;
+margin-left:20px;
+transition:0.3s;
+}
+
+.nav-link::after{
+
+content:"";
+
+position:absolute;
+
+width:0;
+
+height:2px;
+
+background:#d0b200;
+
+left:0;
+
+bottom:-5px;
+
+transition:0.3s;
+
+}
+
+.nav-link:hover::after{
+
+width:100%;
+
+}
+.cart-badge{
+
+background:rgb(255, 0, 0);
+
+color:hwb(0 100% 0%);
+
+font-size:12px;
+
+padding:3px 8px;
+
+border-radius:50%;
+
+margin-left:5px;
+
+}
+.menu-item{
+
+transition:0.4s;
+
+}
+
+.menu-item.hide{
+
+opacity:0;
+
+transform:scale(0.9);
+
+}
+
+.filter-btn{
+
+margin:5px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
+
+<div class="container">
+
+<a class="navbar-brand" href="index.html">
+<img src="images/logo.png" class="logo">
+</a>
+
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarNav">
+
+<ul class="navbar-nav ml-auto">
+<li class="nav-item">
+<a class="nav-link" href="login.html" id="login-btn">Login</a>
+</li>
+
+<li class="nav-item" id="user-section" style="display:none;">
+<a class="nav-link" href="profile.html">👤 Profile</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#wcu">Why Choose Us?</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#menu">Explore Menu</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link cart-link" href="cart.html" id="cart-icon">
+🛒 Cart <span class="cart-badge" id="cart-count">0</span>
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="checkout.html">Delivery</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="payment.html">Payment</a>
+</li>
+
+
+<li class="nav-item">
+<a class="nav-link" href="index.html#follow">Follow Us</a>
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</nav>
+
+
+<div class="container">
+
+<div class="menu-container">
+
+<h2 id="title" class="text-center mb-4"></h2>
+<div class="text-center mb-4">
+
+<button class="btn btn-warning filter-btn" onclick="filterFood('all')">All</button>
+
+<button class="btn btn-success filter-btn" onclick="filterFood('veg')">Veg</button>
+
+<button class="btn btn-danger filter-btn" onclick="filterFood('nonveg')">Non-Veg</button>
+
+<button class="btn btn-info filter-btn" onclick="filterFood('desserts')">Desserts</button>
+
+</div>
+
+<div class="row" id="menu-items"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+let params = new URLSearchParams(window.location.search);
+let category = params.get("category");
+
+let menu = {
+
+nonveg:[
+{name:"Chicken 65",price:220,image:"images/chicken65.jpg"},
+{name:"Tandoori Chicken",price:300,image:"images/tandoori.jpg"},
+{name:"Chicken Wings",price:180,image:"images/wings.jpg"},
+{name:"Chicken Lollipop",price:210,image:"images/Lollipop.jpg"},
+{name:"Chicken Fry",price:200,image:"images/ChickenFry.jpg"},
+{name:"Pepper Chicken",price:230,image:"images/ChickenFry.jpg"},
+{name:"Butter Chicken",price:280,image:"images/ButterChicken.jpg"},
+{name:"Chicken Kebab",price:250,image:"images/ChickenKebab.jpg"},
+{name:"Chicken Roast",price:260,image:"images/ChickenRoast.jpg"},
+{name:"Chicken Curry",price:240,image:"images/ChickenCurry.jpg"}
+],
+
+veg:[
+{name:"Paneer Tikka",price:200,image:"images/paneer.jpg"},
+{name:"Veg Manchurian",price:150,image:"images/manchurian.jpg"},
+{name:"Paneer Butter Masala",price:220,image:"images/PaneerButterMasala.jpg"},
+{name:"Veg Korma",price:190,image:"images/VegKorma.jpg"},
+{name:"Chilli Paneer",price:210,image:"images/ChilliPaneer.jpg"},
+{name:"Veg Kofta",price:200,image:"images/VegKofta.jpg"},
+{name:"Aloo Gobi",price:170,image:"images/AlooGobi.jpg"},
+{name:"Paneer Curry",price:210,image:"images/PaneerCurry.jpg"},
+{name:"Veg Curry",price:180,image:"images/VegCurry.jpg"},
+{name:"Mushroom Masala",price:200,image:"images/MushroomMasala.jpg"}
+],
+
+soups:[
+{name:"Chicken Soup",price:120,image:"images/chickensoup.jpg"},
+{name:"Veg Soup",price:100,image:"images/vegsoup.jpg"},
+{name:"Hot & Sour Soup",price:110,image:"images/Hot & SourSoup.jpg"},
+{name:"Sweet Corn Soup",price:120,image:"images/SweetCornSoup.jpg"},
+{name:"Tomato Soup",price:90,image:"images/TomatoSoup.jpg"},
+{name:"Mushroom Soup",price:110,image:"images/MushroomSoup.jpg"},
+{name:"Manchow Soup",price:120,image:"images/ManchowSoup.jpg"},
+{name:"Veg Clear Soup",price:100,image:"images/VegClearSoup.jpg"},
+{name:"Chicken Manchow Soup",price:130,image:"images/ChickenManchowSoup.jpg"},
+{name:"Lemon Coriander Soup",price:110,image:"images/LemonCorianderSoup.jpg"}
+],
+
+fish:[
+{name:"Fish Fry",price:250,image:"images/fishfry.jpg"},
+{name:"Prawn Curry",price:320,image:"images/prawn.jpg"},
+{name:"Fish Curry",price:280,image:"images/FishCurry.jpg"},
+{name:"Prawn Fry",price:300,image:"images/PrawnFry.jpg"},
+{name:"Grilled Fish",price:310,image:"images/GrilledFish.jpg"},
+{name:"Fish Tikka",price:290,image:"images/FishTikka.jpg"},
+{name:"Prawn Masala",price:330,image:"images/PrawnMasala.jpg"},
+{name:"Fish Roast",price:300,image:"images/FishRoast.jpg"},
+{name:"Fish Pepper Fry",price:310,image:"images/FishPepperFry.jpg"},
+{name:"Seafood Mix",price:350,image:"images/SeafoodMix.jpg"}
+],
+
+maincourse:[
+{name:"Chicken Biryani",price:260,image:"images/biryani.jpg"},
+{name:"Veg Fried Rice",price:180,image:"images/friedrice.jpg"},
+{name:"Mutton Biryani",price:320,image:"images/MuttonBiryani.jpg"},
+{name:"Paneer Biryani",price:220,image:"images/PaneerBiryani.jpg"},
+{name:"Chicken Fried Rice",price:200,image:"images/ChickenFriedRice.jpg"},
+{name:"Egg Fried Rice",price:170,image:"images/EggFriedRice.jpg"},
+{name:"Veg Biryani",price:200,image:"images/VegBiryani.jpg"},
+{name:"Chicken Pulao",price:210,image:"images/ChickenPulao.jpg"},
+{name:"Jeera Rice",price:150,image:"images/JeeraRice.jpg"},
+{name:"Curd Rice",price:130,image:"images/CurdRice.jpg"}
+],
+
+noodles:[
+{name:"Chicken Noodles",price:190,image:"images/chickennoodles.jpg"},
+{name:"Veg Noodles",price:160,image:"images/vegnoodles.jpg"},
+{name:"Egg Noodles",price:170,image:"images/EggNoodles.jpg"},
+{name:"Hakka Noodles",price:180,image:"images/HakkaNoodles.jpg"},
+{name:"Paneer Noodles",price:190,image:"images/PaneerNoodles.jpg"},
+{name:"Garlic Noodles",price:170,image:"images/GarlicNoodles.jpg"},
+{name:"Schezwan Noodles",price:200,image:"images/SchezwanNoodles.jpg"},
+{name:"Chicken Hakka Noodles",price:210,image:"images/ChickenHakkaNoodles.jpg"},
+{name:"Veg Chowmein",price:160,image:"images/VegChowmein.jpg"},
+{name:"Mixed Noodles",price:200,image:"images/MixedNoodles.jpg"}
+],
+
+salads:[
+{name:"Greek Salad",price:120,image:"images/greeksalad.jpg"},
+{name:"Fruit Salad",price:110,image:"images/fruitsalad.jpg"},
+{name:"Veg Salad",price:100,image:"images/VegSalad.jpg"},
+{name:"Cucumber Salad",price:90,image:"images/CucumberSalad.jpg"},
+{name:"Tomato Salad",price:90,image:"images/TomatoSalad.jpg"},
+{name:"Corn Salad",price:110,image:"images/CornSalad.jpg"},
+{name:"Paneer Salad",price:130,image:"images/PaneerSalad.jpg"},
+{name:"Sprout Salad",price:120,image:"images/SproutSalad.jpg"},
+{name:"Green Salad",price:100,image:"images/GreenSalad.jpg"},
+{name:"Mixed Salad",price:120,image:"images/MixedSalad.jpg"}
+],
+
+desserts:[
+{name:"Chocolate Cake",price:150,image:"images/chocolatecake.jpg"},
+{name:"Ice Cream",price:100,image:"images/icecream.jpg"},
+{name:"Gulab Jamun",price:90,image:"images/GulabJamun.jpg"},
+{name:"Rasgulla",price:90,image:"images/Rasgulla.jpg"},
+{name:"Brownie",price:130,image:"images/Brownie.jpg"},
+{name:"Vanilla Ice Cream",price:100,image:"images/VanillaIceCream.jpg"},
+{name:"Strawberry Ice Cream",price:110,image:"images/StrawberryIceCream.jpg"},
+{name:"Falooda",price:140,image:"images/Falooda.jpg"},
+{name:"Cheese Cake",price:160,image:"images/CheeseCake.jpg"},
+{name:"Cup Cake",price:90,image:"images/CupCake.jpg"}
+]
+
+};
+let items = menu[category] || [];
+
+document.getElementById("title").innerText = category.charAt(0).toUpperCase() + category.slice(1) + " Menu";
+
+let container = document.getElementById("menu-items");
+
+items.forEach(item=>{
+
+container.innerHTML += `
+
+<div class="col-md-3 menu-item ${category} ${item.name.toLowerCase().includes("chicken") ? "nonveg" : "veg"}">
+
+<img src="${item.image}" class="food-img">
+
+<h5>${item.name}</h5>
+
+<p>₹${item.price}</p>
+
+<button class="btn btn-warning"
+onclick="addToCart('${item.name}',${item.price},'${item.image}'); flyToCart(this.parentElement.querySelector('img'));">
+Add To Cart
+</button>
+
+</div>
+
+`;
+
+});
+
+
+function addToCart(name,price,image){
+
+let isLoggedIn = localStorage.getItem("loggedIn");
+
+if(!isLoggedIn){
+
+localStorage.setItem("redirectPage", window.location.href);
+
+alert("Please login first to add items to cart");
+
+window.location.href="login.html";
+
+return;
+
+}
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+let product={
+name:name,
+price:price,
+image:image
+};
+
+cart.push(product);
+
+localStorage.setItem("cart",JSON.stringify(cart));
+
+updateCartCount();
+
+alert(name+" added to cart");
+
+}
+
+function updateCartCount(){
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+let count = document.getElementById("cart-count");
+
+if(count){
+count.innerText = cart.length;
+}
+
+}
+
+updateCartCount();
+window.addEventListener("scroll",function(){
+
+let navbar=document.querySelector(".custom-navbar");
+
+if(window.scrollY>50){
+
+navbar.style.padding="5px 20px";
+
+navbar.style.boxShadow="0 5px 15px rgba(0,0,0,0.2)";
+
+}
+
+else{
+
+navbar.style.padding="10px 30px";
+
+navbar.style.boxShadow="0 8px 20px rgba(0,0,0,0.15)";
+
+}
+
+});
+function flyToCart(img){
+
+let cart = document.getElementById("cart-icon");
+
+let flyingImg = img.cloneNode();
+
+let rect = img.getBoundingClientRect();
+let cartRect = cart.getBoundingClientRect();
+
+flyingImg.style.position = "fixed";
+flyingImg.style.left = rect.left + "px";
+flyingImg.style.top = rect.top + "px";
+flyingImg.style.width = "80px";
+flyingImg.style.zIndex = "1000";
+flyingImg.style.transition = "all 0.8s ease";
+
+document.body.appendChild(flyingImg);
+
+setTimeout(function(){
+
+flyingImg.style.left = cartRect.left + "px";
+flyingImg.style.top = cartRect.top + "px";
+flyingImg.style.width = "20px";
+flyingImg.style.opacity = "0.5";
+
+},50);
+
+setTimeout(function(){
+flyingImg.remove();
+},800);
+
+}
+function filterFood(type){
+
+let items = document.querySelectorAll(".menu-item");
+
+items.forEach(function(item){
+
+let text = item.innerText.toLowerCase();
+
+if(type === "all"){
+item.style.display = "block";
+}
+else if(type === "veg" && !text.includes("chicken") && !text.includes("fish") && !text.includes("mutton")){
+item.style.display = "block";
+}
+else if(type === "nonveg" && (text.includes("chicken") || text.includes("fish") || text.includes("mutton"))){
+item.style.display = "block";
+}
+else if(type === "desserts" && text.includes("cake") || text.includes("ice") || text.includes("sweet")){
+item.style.display = "block";
+}
+else{
+item.style.display = "none";
+}
+
+});
+
+}
+
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
